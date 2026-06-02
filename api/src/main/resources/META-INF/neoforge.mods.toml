@@ -1,0 +1,31 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="Apache-2.0"
+
+[[mods]]
+modId="fabric_client_gametest_api_v1"
+version="${version}"
+displayName="NeoForge Client GameTest API (unofficial)"
+description='''An unofficial NeoForge port of the Fabric Client GameTest API.'''
+logoFile="assets/fabric-client-gametest-api-v1/icon.png"
+authors="FabricMC, ported by Alexander01998"
+
+[[mixins]]
+config="fabric-client-gametest-api-v1.mixins.json"
+
+[[accessTransformers]]
+file="META-INF/accesstransformer.cfg"
+
+[[dependencies.fabric_client_gametest_api_v1]]
+modId="neoforge"
+type="required"
+versionRange="${neo_version_range}"
+ordering="NONE"
+side="CLIENT"
+
+[[dependencies.fabric_client_gametest_api_v1]]
+modId="minecraft"
+type="required"
+versionRange="${minecraft_version_range}"
+ordering="NONE"
+side="CLIENT"

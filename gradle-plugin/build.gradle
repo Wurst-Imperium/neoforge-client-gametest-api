@@ -1,0 +1,56 @@
+plugins {
+	id 'groovy'
+	id 'java-gradle-plugin'
+	id 'maven-publish'
+}
+
+group = 'net.wimods.gradle'
+
+base {
+	archivesName = 'neoforge-client-gametest-api-gradle-plugin'
+}
+
+java {
+	toolchain.languageVersion = JavaLanguageVersion.of(21)
+	withSourcesJar()
+}
+
+dependencies {
+	implementation localGroovy()
+}
+
+gradlePlugin {
+	plugins {
+		neoForgeClientGameTestApi {
+			id = 'net.wimods.neoforge-client-gametest-api'
+			implementationClass = 'net.wimods.gradle.clientgametest.NeoForgeClientGameTestPlugin'
+			displayName = 'NeoForge Client GameTest API'
+			description = 'Adds a separate NeoForge client gametest source set and jar.'
+		}
+	}
+}
+
+tasks.named('jar').configure {
+	manifest {
+		attributes('Implementation-Version': project.version)
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	options.encoding = 'UTF-8'
+}
+
+publishing {
+	publications.withType(MavenPublication).configureEach { publication ->
+		if (publication.name == 'pluginMaven') {
+			publication.artifactId = 'neoforge-client-gametest-api'
+		}
+	}
+
+	repositories {
+		maven {
+			name = 'staging'
+			url = rootProject.layout.buildDirectory.dir('maven-repo')
+		}
+	}
+}

@@ -1,0 +1,10 @@
+.gradle/
+**/.gradle/
+build/
+**/build/
+run/
+**/run/
+runs/
+**/runs/
+*.log
+**/bin/

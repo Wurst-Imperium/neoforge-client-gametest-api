@@ -1,0 +1,14 @@
+plugins {
+	id 'maven-publish'
+}
+
+subprojects {
+	group = rootProject.group
+	version = rootProject.version
+
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		maven { url = 'https://maven.neoforged.net/releases' }
+	}
+}
