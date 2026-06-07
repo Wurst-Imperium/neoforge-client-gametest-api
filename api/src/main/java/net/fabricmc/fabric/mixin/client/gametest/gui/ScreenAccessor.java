@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.client.gametest.input;
+package net.fabricmc.fabric.mixin.client.gametest.gui;
 
-import net.minecraft.client.KeyboardHandler;
-import net.minecraft.client.input.CharacterEvent;
-import net.minecraft.client.input.KeyEvent;
+import java.util.List;
+
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Invoker;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(KeyboardHandler.class)
-public interface KeyboardAccessor
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.screens.Screen;
+
+@Mixin(Screen.class)
+public interface ScreenAccessor
 {
-	@Invoker("keyPress")
-	void invokeOnKey(long window, int action, KeyEvent keyInput);
-	
-	@Invoker("charTyped")
-	void invokeOnChar(long window, CharacterEvent charInput);
+	@Accessor
+	List<Renderable> getRenderables();
 }

@@ -21,16 +21,16 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.util.Optional;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.datafixers.util.Either;
+import org.jspecify.annotations.Nullable;
+
+import net.minecraft.client.renderer.Rect2i;
 
 import net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonAlgorithm;
 import net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonOptions;
 import net.fabricmc.fabric.impl.client.gametest.FabricClientGameTestRunner;
-import net.minecraft.client.renderer.Rect2i;
 
 public final class TestScreenshotComparisonOptionsImpl
 	extends TestScreenshotCommonOptionsImpl<TestScreenshotComparisonOptions>
@@ -122,8 +122,7 @@ public final class TestScreenshotComparisonOptionsImpl
 		return this.getTemplateImagePath().orElseThrow();
 	}
 	
-	@Nullable
-	public TestScreenshotComparisonAlgorithm.RawImage<byte[]> getGrayscaleTemplateImage()
+	public TestScreenshotComparisonAlgorithm.@Nullable RawImage<byte[]> getGrayscaleTemplateImage()
 	{
 		return this.templateImage.map(fileName -> {
 			try(NativeImage image = loadNativeImage(fileName))
@@ -145,8 +144,7 @@ public final class TestScreenshotComparisonOptionsImpl
 		});
 	}
 	
-	@Nullable
-	public TestScreenshotComparisonAlgorithm.RawImage<int[]> getColorTemplateImage()
+	public TestScreenshotComparisonAlgorithm.@Nullable RawImage<int[]> getColorTemplateImage()
 	{
 		return this.templateImage.map(fileName -> {
 			try(NativeImage image = loadNativeImage(fileName))
@@ -172,8 +170,9 @@ public final class TestScreenshotComparisonOptionsImpl
 	{
 		String resourcePath = "templates/" + templateImagePath + ".png";
 		
-		try(InputStream stream = FabricClientGameTestRunner.currentlyRunningGameTest
-			.openResource(resourcePath))
+		try(InputStream stream =
+			FabricClientGameTestRunner.currentlyRunningGameTest
+				.openResource(resourcePath))
 		{
 			if(stream == null)
 			{

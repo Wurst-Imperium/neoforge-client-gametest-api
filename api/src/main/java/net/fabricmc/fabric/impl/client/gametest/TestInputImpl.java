@@ -24,13 +24,7 @@ import java.util.function.Function;
 import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.platform.InputConstants;
 import org.lwjgl.glfw.GLFW;
-import net.fabricmc.fabric.api.client.gametest.v1.TestInput;
-import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
-import net.fabricmc.fabric.impl.client.gametest.threading.ThreadingImpl;
-import net.fabricmc.fabric.impl.client.gametest.util.WindowHooks;
-import net.fabricmc.fabric.mixin.client.gametest.input.KeyBindingAccessor;
-import net.fabricmc.fabric.mixin.client.gametest.input.KeyboardAccessor;
-import net.fabricmc.fabric.mixin.client.gametest.input.MouseAccessor;
+
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
@@ -38,6 +32,14 @@ import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonInfo;
 import net.minecraft.util.Util;
+import net.neoforged.neoforge.client.extensions.IKeyMappingExtension;
+
+import net.fabricmc.fabric.api.client.gametest.v1.TestInput;
+import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
+import net.fabricmc.fabric.impl.client.gametest.threading.ThreadingImpl;
+import net.fabricmc.fabric.impl.client.gametest.util.WindowHooks;
+import net.fabricmc.fabric.mixin.client.gametest.input.KeyboardHandlerAccessor;
+import net.fabricmc.fabric.mixin.client.gametest.input.MouseHandlerAccessor;
 
 public final class TestInputImpl implements TestInput
 {
@@ -65,23 +67,23 @@ public final class TestInputImpl implements TestInput
 	}
 	
 	@Override
-	public void holdKey(KeyMapping keyBinding)
+	public void holdKey(KeyMapping keyMapping)
 	{
 		ThreadingImpl.checkOnGametestThread("holdKey");
-		Preconditions.checkNotNull(keyBinding, "keyBinding");
+		Preconditions.checkNotNull(keyMapping, "keyMapping");
 		
-		holdKey(getBoundKey(keyBinding, "hold"));
+		holdKey(getBoundKey(keyMapping, "hold"));
 	}
 	
 	@Override
-	public void holdKey(Function<Options, KeyMapping> keyBindingGetter)
+	public void holdKey(Function<Options, KeyMapping> keyMappingGetter)
 	{
 		ThreadingImpl.checkOnGametestThread("holdKey");
-		Preconditions.checkNotNull(keyBindingGetter, "keyBindingGetter");
+		Preconditions.checkNotNull(keyMappingGetter, "keyMappingGetter");
 		
-		KeyMapping keyBinding = context
-			.computeOnClient(client -> keyBindingGetter.apply(client.options));
-		holdKey(keyBinding);
+		KeyMapping keyMapping = context
+			.computeOnClient(client -> keyMappingGetter.apply(client.options));
+		holdKey(keyMapping);
 	}
 	
 	@Override
@@ -139,23 +141,23 @@ public final class TestInputImpl implements TestInput
 	}
 	
 	@Override
-	public void releaseKey(KeyMapping keyBinding)
+	public void releaseKey(KeyMapping keyMapping)
 	{
 		ThreadingImpl.checkOnGametestThread("releaseKey");
-		Preconditions.checkNotNull(keyBinding, "keyBinding");
+		Preconditions.checkNotNull(keyMapping, "keyMapping");
 		
-		releaseKey(getBoundKey(keyBinding, "release"));
+		releaseKey(getBoundKey(keyMapping, "release"));
 	}
 	
 	@Override
-	public void releaseKey(Function<Options, KeyMapping> keyBindingGetter)
+	public void releaseKey(Function<Options, KeyMapping> keyMappingGetter)
 	{
 		ThreadingImpl.checkOnGametestThread("releaseKey");
-		Preconditions.checkNotNull(keyBindingGetter, "keyBindingGetter");
+		Preconditions.checkNotNull(keyMappingGetter, "keyMappingGetter");
 		
-		KeyMapping keyBinding = context
-			.computeOnClient(client -> keyBindingGetter.apply(client.options));
-		releaseKey(keyBinding);
+		KeyMapping keyMapping = context
+			.computeOnClient(client -> keyMappingGetter.apply(client.options));
+		releaseKey(keyMapping);
 	}
 	
 	@Override
@@ -217,36 +219,36 @@ public final class TestInputImpl implements TestInput
 	{
 		switch(key.getType())
 		{
-			case KEYSYM -> ((KeyboardAccessor)client.keyboardHandler)
-				.invokeOnKey(client.getWindow().handle(), action,
+			case KEYSYM -> ((KeyboardHandlerAccessor)client.keyboardHandler)
+				.invokeKeyPress(client.getWindow().handle(), action,
 					new KeyEvent(key.getValue(), 0, 0));
-			case SCANCODE -> ((KeyboardAccessor)client.keyboardHandler)
-				.invokeOnKey(client.getWindow().handle(), action,
+			case SCANCODE -> ((KeyboardHandlerAccessor)client.keyboardHandler)
+				.invokeKeyPress(client.getWindow().handle(), action,
 					new KeyEvent(GLFW.GLFW_KEY_UNKNOWN, key.getValue(), 0));
-			case MOUSE -> ((MouseAccessor)client.mouseHandler)
-				.invokeOnMouseButton(client.getWindow().handle(),
+			case MOUSE -> ((MouseHandlerAccessor)client.mouseHandler)
+				.invokeOnButton(client.getWindow().handle(),
 					new MouseButtonInfo(key.getValue(), 0), action);
 		}
 	}
 	
 	@Override
-	public void pressKey(KeyMapping keyBinding)
+	public void pressKey(KeyMapping keyMapping)
 	{
 		ThreadingImpl.checkOnGametestThread("pressKey");
-		Preconditions.checkNotNull(keyBinding, "keyBinding");
+		Preconditions.checkNotNull(keyMapping, "keyMapping");
 		
-		pressKey(getBoundKey(keyBinding, "press"));
+		pressKey(getBoundKey(keyMapping, "press"));
 	}
 	
 	@Override
-	public void pressKey(Function<Options, KeyMapping> keyBindingGetter)
+	public void pressKey(Function<Options, KeyMapping> keyMappingGetter)
 	{
 		ThreadingImpl.checkOnGametestThread("pressKey");
-		Preconditions.checkNotNull(keyBindingGetter, "keyBindingGetter");
+		Preconditions.checkNotNull(keyMappingGetter, "keyMappingGetter");
 		
-		KeyMapping keyBinding = context
-			.computeOnClient(client -> keyBindingGetter.apply(client.options));
-		pressKey(keyBinding);
+		KeyMapping keyMapping = context
+			.computeOnClient(client -> keyMappingGetter.apply(client.options));
+		pressKey(keyMapping);
 	}
 	
 	@Override
@@ -277,26 +279,26 @@ public final class TestInputImpl implements TestInput
 	}
 	
 	@Override
-	public void holdKeyFor(KeyMapping keyBinding, int ticks)
+	public void holdKeyFor(KeyMapping keyMapping, int ticks)
 	{
 		ThreadingImpl.checkOnGametestThread("holdKeyFor");
-		Preconditions.checkNotNull(keyBinding, "keyBinding");
+		Preconditions.checkNotNull(keyMapping, "keyMapping");
 		Preconditions.checkArgument(ticks >= 0, "ticks cannot be negative");
 		
-		holdKeyFor(getBoundKey(keyBinding, "hold"), ticks);
+		holdKeyFor(getBoundKey(keyMapping, "hold"), ticks);
 	}
 	
 	@Override
-	public void holdKeyFor(Function<Options, KeyMapping> keyBindingGetter,
+	public void holdKeyFor(Function<Options, KeyMapping> keyMappingGetter,
 		int ticks)
 	{
 		ThreadingImpl.checkOnGametestThread("holdKeyFor");
-		Preconditions.checkNotNull(keyBindingGetter, "keyBindingGetter");
+		Preconditions.checkNotNull(keyMappingGetter, "keyMappingGetter");
 		Preconditions.checkArgument(ticks >= 0, "ticks cannot be negative");
 		
-		KeyMapping keyBinding = context
-			.computeOnClient(client -> keyBindingGetter.apply(client.options));
-		holdKeyFor(keyBinding, ticks);
+		KeyMapping keyMapping = context
+			.computeOnClient(client -> keyMappingGetter.apply(client.options));
+		holdKeyFor(keyMapping, ticks);
 	}
 	
 	@Override
@@ -335,8 +337,9 @@ public final class TestInputImpl implements TestInput
 		ThreadingImpl.checkOnGametestThread("typeChar");
 		
 		context.runOnClient(
-			client -> ((KeyboardAccessor)client.keyboardHandler).invokeOnChar(
-				client.getWindow().handle(), new CharacterEvent(codePoint, 0)));
+			client -> ((KeyboardHandlerAccessor)client.keyboardHandler)
+				.invokeCharTyped(client.getWindow().handle(),
+					new CharacterEvent(codePoint)));
 	}
 	
 	@Override
@@ -346,9 +349,9 @@ public final class TestInputImpl implements TestInput
 		
 		context.runOnClient(client -> {
 			chars.chars().forEach(codePoint -> {
-				((KeyboardAccessor)client.keyboardHandler).invokeOnChar(
-					client.getWindow().handle(),
-					new CharacterEvent(codePoint, 0));
+				((KeyboardHandlerAccessor)client.keyboardHandler)
+					.invokeCharTyped(client.getWindow().handle(),
+						new CharacterEvent(codePoint));
 			});
 		});
 	}
@@ -366,9 +369,9 @@ public final class TestInputImpl implements TestInput
 	{
 		ThreadingImpl.checkOnGametestThread("scroll");
 		
-		context.runOnClient(
-			client -> ((MouseAccessor)client.mouseHandler).invokeOnMouseScroll(
-				client.getWindow().handle(), xAmount, yAmount));
+		context
+			.runOnClient(client -> ((MouseHandlerAccessor)client.mouseHandler)
+				.invokeOnScroll(client.getWindow().handle(), xAmount, yAmount));
 	}
 	
 	@Override
@@ -376,8 +379,9 @@ public final class TestInputImpl implements TestInput
 	{
 		ThreadingImpl.checkOnGametestThread("setCursorPos");
 		
-		context.runOnClient(client -> ((MouseAccessor)client.mouseHandler)
-			.invokeOnCursorPos(client.getWindow().handle(), x, y));
+		context
+			.runOnClient(client -> ((MouseHandlerAccessor)client.mouseHandler)
+				.invokeOnMove(client.getWindow().handle(), x, y));
 	}
 	
 	@Override
@@ -388,8 +392,8 @@ public final class TestInputImpl implements TestInput
 		context.runOnClient(client -> {
 			double newX = client.mouseHandler.xpos() + deltaX;
 			double newY = client.mouseHandler.ypos() + deltaY;
-			((MouseAccessor)client.mouseHandler)
-				.invokeOnCursorPos(client.getWindow().handle(), newX, newY);
+			((MouseHandlerAccessor)client.mouseHandler)
+				.invokeOnMove(client.getWindow().handle(), newX, newY);
 		});
 	}
 	
@@ -404,17 +408,17 @@ public final class TestInputImpl implements TestInput
 			.fabric_resize(width, height));
 	}
 	
-	private static InputConstants.Key getBoundKey(KeyMapping keyBinding,
+	private static InputConstants.Key getBoundKey(KeyMapping keyMapping,
 		String action)
 	{
 		InputConstants.Key boundKey =
-			((KeyBindingAccessor)keyBinding).getBoundKey();
+			((IKeyMappingExtension)keyMapping).getKey();
 		
 		if(boundKey == InputConstants.UNKNOWN)
 		{
 			throw new AssertionError(
 				"Cannot %s binding '%s' because it isn't bound to a key"
-					.formatted(action, keyBinding.getName()));
+					.formatted(action, keyMapping.getName()));
 		}
 		
 		return boundKey;

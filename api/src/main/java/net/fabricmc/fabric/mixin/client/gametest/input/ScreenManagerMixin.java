@@ -21,10 +21,11 @@ import com.mojang.blaze3d.platform.ScreenManager;
 import com.mojang.blaze3d.platform.Window;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+
 import net.fabricmc.fabric.impl.client.gametest.util.WindowHooks;
 
 @Mixin(ScreenManager.class)
-public class MonitorTrackerMixin
+public class ScreenManagerMixin
 {
 	@ModifyExpressionValue(
 		method = "findBestMonitor(Lcom/mojang/blaze3d/platform/Window;)Lcom/mojang/blaze3d/platform/Monitor;",

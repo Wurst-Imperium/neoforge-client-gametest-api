@@ -24,12 +24,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.thread.BlockableEventLoop;
+
 import net.fabricmc.fabric.impl.client.gametest.threading.NetworkSynchronizer;
 
 @Mixin(BlockableEventLoop.class)
-public class ThreadExecutorMixin
+public class BlockableEventLoopMixin
 {
-	@Inject(method = "execute", at = @At("HEAD"))
+	@Inject(method = "schedule", at = @At("HEAD"))
 	private void onPacketHandlerSchedule(Runnable task, CallbackInfo ci)
 	{
 		switch((Object)this)

@@ -26,7 +26,7 @@ import com.mojang.blaze3d.platform.ScreenManager;
 import com.mojang.blaze3d.platform.VideoMode;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.platform.WindowEventHandler;
-import org.jetbrains.annotations.Nullable;
+import com.mojang.blaze3d.systems.GpuBackend;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -34,6 +34,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 import net.fabricmc.fabric.impl.client.gametest.util.WindowHooks;
 
 @Mixin(Window.class)
@@ -73,6 +74,8 @@ public abstract class WindowMixin implements WindowHooks
 	@Shadow
 	protected abstract void setMode();
 	
+	@Shadow
+	private boolean focused;
 	@Unique
 	private int defaultWidth;
 	@Unique
@@ -88,11 +91,11 @@ public abstract class WindowMixin implements WindowHooks
 	
 	@Inject(method = "<init>", at = @At("RETURN"))
 	private void onInit(WindowEventHandler eventHandler,
-		ScreenManager monitorTracker, DisplayData settings,
-		@Nullable String fullscreenVideoMode, String title, CallbackInfo ci)
+		DisplayData displayData, String fullscreenVideoModeString, String title,
+		GpuBackend backend, CallbackInfo ci)
 	{
-		this.defaultWidth = settings.width();
-		this.defaultHeight = settings.height();
+		this.defaultWidth = displayData.width();
+		this.defaultHeight = displayData.height();
 		this.realWidth = this.width;
 		this.realHeight = this.height;
 		this.realFramebufferWidth = this.framebufferWidth;
@@ -112,7 +115,7 @@ public abstract class WindowMixin implements WindowHooks
 	}
 	
 	@Inject(method = "onResize", at = @At("HEAD"), cancellable = true)
-	private void cancelWindowSizeChanged(long window, int width, int height,
+	private void cancelResize(long window, int width, int height,
 		CallbackInfo ci)
 	{
 		realWidth = width;
@@ -123,8 +126,8 @@ public abstract class WindowMixin implements WindowHooks
 	@Inject(method = "onFramebufferResize",
 		at = @At("HEAD"),
 		cancellable = true)
-	private void cancelFramebufferSizeChanged(long window, int width,
-		int height, CallbackInfo ci)
+	private void cancelFramebufferResize(long window, int width, int height,
+		CallbackInfo ci)
 	{
 		realFramebufferWidth = width;
 		realFramebufferHeight = height;
@@ -241,6 +244,12 @@ public abstract class WindowMixin implements WindowHooks
 		this.height = this.windowedHeight = this.framebufferHeight = height;
 		
 		setMode();
-		this.eventHandler.resizeDisplay();
+		this.eventHandler.resizeGui();
+	}
+	
+	@Override
+	public void fabric_focus()
+	{
+		this.focused = true;
 	}
 }

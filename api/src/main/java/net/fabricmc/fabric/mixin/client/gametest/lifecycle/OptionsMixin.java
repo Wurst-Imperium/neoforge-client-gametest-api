@@ -14,16 +14,23 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.client.gametest;
+package net.fabricmc.fabric.mixin.client.gametest.lifecycle;
 
-import java.util.Deque;
-import net.minecraft.client.multiplayer.ClientLevel;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ClientLevel.class)
-public interface ClientWorldAccessor
+import net.minecraft.client.Options;
+
+import net.fabricmc.fabric.impl.client.gametest.context.ClientGameTestContextImpl;
+
+@Mixin(Options.class)
+public class OptionsMixin
 {
-	@Accessor("lightUpdateQueue")
-	Deque<Runnable> getChunkUpdaters();
+	@Inject(method = "<init>", at = @At("RETURN"))
+	private void onCreateGameOptions(CallbackInfo ci)
+	{
+		ClientGameTestContextImpl.initGameOptions((Options)(Object)this);
+	}
 }

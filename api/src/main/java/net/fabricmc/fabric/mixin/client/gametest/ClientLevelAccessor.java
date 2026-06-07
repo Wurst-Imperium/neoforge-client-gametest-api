@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.client.gametest.screenshot;
+package net.fabricmc.fabric.mixin.client.gametest;
 
-import net.minecraft.client.DeltaTracker;
+import java.util.Deque;
+
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Invoker;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(DeltaTracker.DefaultValue.class)
-public interface RenderTickCounterConstantAccessor
+import net.minecraft.client.multiplayer.ClientLevel;
+
+@Mixin(ClientLevel.class)
+public interface ClientLevelAccessor
 {
-	@Invoker("<init>")
-	static DeltaTracker.DefaultValue create(float constant)
-	{
-		throw new UnsupportedOperationException("Implemented via mixin");
-	}
+	@Accessor
+	Deque<Runnable> getLightUpdateQueue();
 }

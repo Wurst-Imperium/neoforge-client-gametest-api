@@ -21,8 +21,9 @@ import net.minecraft.client.gui.screens.GenericMessageScreen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
+
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
-import net.fabricmc.fabric.api.client.gametest.v1.context.TestClientWorldContext;
+import net.fabricmc.fabric.api.client.gametest.v1.context.TestClientLevelContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestServerContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
 import net.fabricmc.fabric.api.client.gametest.v1.world.TestWorldSave;
@@ -32,7 +33,7 @@ public class TestSingleplayerContextImpl implements TestSingleplayerContext
 {
 	private final ClientGameTestContext context;
 	private final TestWorldSave worldSave;
-	private final TestClientWorldContext clientWorld;
+	private final TestClientLevelContext clientLevel;
 	private final TestServerContext server;
 	
 	public TestSingleplayerContextImpl(ClientGameTestContext context,
@@ -40,7 +41,7 @@ public class TestSingleplayerContextImpl implements TestSingleplayerContext
 	{
 		this.context = context;
 		this.worldSave = worldSave;
-		this.clientWorld = new TestClientWorldContextImpl(context);
+		this.clientLevel = new TestClientLevelContextImpl(context);
 		this.server = new TestServerContextImpl(server);
 	}
 	
@@ -51,9 +52,9 @@ public class TestSingleplayerContextImpl implements TestSingleplayerContext
 	}
 	
 	@Override
-	public TestClientWorldContext getClientWorld()
+	public TestClientLevelContext getClientLevel()
 	{
-		return clientWorld;
+		return clientLevel;
 	}
 	
 	@Override
@@ -82,6 +83,7 @@ public class TestSingleplayerContextImpl implements TestSingleplayerContext
 		context.waitFor(
 			client -> !ThreadingImpl.isServerRunning && client.level == null,
 			SharedConstants.TICKS_PER_MINUTE);
+		context.waitTicks(2);
 		context.setScreen(TitleScreen::new);
 	}
 }

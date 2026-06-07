@@ -21,12 +21,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.TitleScreen;
+
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
 import net.fabricmc.fabric.impl.client.gametest.context.ClientGameTestContextImpl;
 import net.fabricmc.fabric.impl.client.gametest.threading.ThreadingImpl;
 import net.fabricmc.fabric.impl.client.gametest.util.WindowHooks;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.TitleScreen;
 import net.neoforged.fml.ModList;
 
 public class FabricClientGameTestRunner
@@ -38,7 +39,8 @@ public class FabricClientGameTestRunner
 	public static void start()
 	{
 		// make the game think the window is focused
-		Minecraft.getInstance().setWindowActive(true);
+		((WindowHooks)(Object)Minecraft.getInstance().getWindow())
+			.fabric_focus();
 		
 		List<ClientGameTestEntrypoint> gameTests = getTestToRun();
 		
@@ -144,8 +146,9 @@ public class FabricClientGameTestRunner
 			if(!(client.screen instanceof TitleScreen))
 			{
 				throw new AssertionError(
-					"Client gametest %s did not finish on the title screen"
-						.formatted(currentlyRunningGameTest.getDefinition()));
+					"Client gametest %s did not finish on the title screen. Current screen %s"
+						.formatted(currentlyRunningGameTest.getDefinition(),
+							client.screen.getClass().getName()));
 			}
 		});
 	}

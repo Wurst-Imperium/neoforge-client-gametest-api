@@ -14,23 +14,17 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.client.gametest.input;
+package net.fabricmc.fabric.mixin.client.gametest.gui;
 
-import net.minecraft.client.MouseHandler;
-import net.minecraft.client.input.MouseButtonInfo;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Invoker;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(MouseHandler.class)
-public interface MouseAccessor
+import net.minecraft.client.gui.components.CycleButton;
+import net.minecraft.network.chat.Component;
+
+@Mixin(CycleButton.class)
+public interface CycleButtonAccessor
 {
-	@Invoker("onButton")
-	void invokeOnMouseButton(long window, MouseButtonInfo mouseInput,
-		int action);
-	
-	@Invoker("onScroll")
-	void invokeOnMouseScroll(long window, double horizontal, double vertical);
-	
-	@Invoker("onMove")
-	void invokeOnCursorPos(long window, double x, double y);
+	@Accessor
+	Component getName();
 }

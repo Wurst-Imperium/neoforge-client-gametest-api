@@ -23,12 +23,13 @@ import java.util.function.Supplier;
 import org.apache.commons.lang3.function.FailableConsumer;
 import org.apache.commons.lang3.function.FailableFunction;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
+import org.jspecify.annotations.Nullable;
 
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+
 import net.fabricmc.fabric.api.client.gametest.v1.TestInput;
 import net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonOptions;
 import net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotOptions;

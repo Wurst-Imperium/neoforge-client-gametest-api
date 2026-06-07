@@ -16,14 +16,19 @@
 
 package net.fabricmc.fabric.mixin.client.gametest.input;
 
-import com.mojang.blaze3d.platform.InputConstants;
-import net.minecraft.client.KeyMapping;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
+import org.spongepowered.asm.mixin.gen.Invoker;
 
-@Mixin(KeyMapping.class)
-public interface KeyBindingAccessor
+import net.minecraft.client.KeyboardHandler;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
+
+@Mixin(KeyboardHandler.class)
+public interface KeyboardHandlerAccessor
 {
-	@Accessor("key")
-	InputConstants.Key getBoundKey();
+	@Invoker
+	void invokeKeyPress(long window, int key, KeyEvent arg);
+	
+	@Invoker
+	void invokeCharTyped(long window, CharacterEvent arg);
 }

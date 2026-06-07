@@ -19,6 +19,7 @@ package net.fabricmc.fabric.impl.client.gametest.world;
 import java.nio.file.Path;
 
 import com.google.common.base.Preconditions;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 
@@ -57,7 +58,7 @@ public final class TestWorldSaveImpl implements TestWorldSave
 			client.createWorldOpenFlows()
 				.openWorld(saveDirectory.getFileName().toString(), () -> {
 					throw new AssertionError(
-						"Level loading should not be canceled");
+						"World opening should not be canceled");
 				});
 		});
 		

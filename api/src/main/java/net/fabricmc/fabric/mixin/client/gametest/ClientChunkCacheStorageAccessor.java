@@ -16,14 +16,17 @@
 
 package net.fabricmc.fabric.mixin.client.gametest;
 
-import net.minecraft.client.gui.components.CycleButton;
-import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(CycleButton.class)
-public interface CyclingButtonWidgetAccessor
+import net.minecraft.client.multiplayer.ClientChunkCache;
+
+@Mixin(ClientChunkCache.Storage.class)
+public interface ClientChunkCacheStorageAccessor
 {
-	@Accessor("name")
-	Component getOptionText();
+	@Accessor
+	int getViewCenterX();
+	
+	@Accessor
+	int getViewCenterZ();
 }

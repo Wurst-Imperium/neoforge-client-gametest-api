@@ -14,21 +14,23 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.client.gametest.lifecycle;
+package net.fabricmc.fabric.mixin.client.gametest.input;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.impl.client.gametest.context.ClientGameTestContextImpl;
-import net.minecraft.client.Options;
+import org.spongepowered.asm.mixin.gen.Invoker;
 
-@Mixin(Options.class)
-public class GameOptionsMixin
+import net.minecraft.client.MouseHandler;
+import net.minecraft.client.input.MouseButtonInfo;
+
+@Mixin(MouseHandler.class)
+public interface MouseHandlerAccessor
 {
-	@Inject(method = "<init>", at = @At("RETURN"))
-	private void onCreateGameOptions(CallbackInfo ci)
-	{
-		ClientGameTestContextImpl.initGameOptions((Options)(Object)this);
-	}
+	@Invoker
+	void invokeOnButton(long window, MouseButtonInfo arg, int action);
+	
+	@Invoker
+	void invokeOnScroll(long window, double horizontal, double vertical);
+	
+	@Invoker
+	void invokeOnMove(long window, double x, double y);
 }

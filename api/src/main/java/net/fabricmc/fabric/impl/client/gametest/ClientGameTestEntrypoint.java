@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import net.fabricmc.fabric.api.client.gametest.v1.FabricClientGameTest;
 import net.neoforged.fml.ModList;

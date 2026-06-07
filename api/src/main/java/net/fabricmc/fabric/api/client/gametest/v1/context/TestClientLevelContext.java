@@ -24,13 +24,13 @@ import net.minecraft.core.BlockPos;
 
 /**
  * Context for a client gametest containing various helpful functions while a
- * client world is open.
+ * client level is open.
  *
  * <p>
  * Functions in this class can only be called on the client gametest thread.
  */
 @ApiStatus.NonExtendable
-public interface TestClientWorldContext
+public interface TestClientLevelContext
 {
 	/**
 	 * The default timeout in ticks to wait for chunks to load/render (1
@@ -100,7 +100,7 @@ public interface TestClientWorldContext
 	/**
 	 * Waits for all chunks to be rendered, optionally waiting for chunks to be
 	 * downloaded first. After this, all chunks
-	 * that are present in the client world will be visible in screenshots.
+	 * that are present in the client level will be visible in screenshots.
 	 * Fails if the chunks haven't been rendered
 	 * (and optionally downloaded) after {@link #DEFAULT_CHUNK_LOAD_TIMEOUT}
 	 * ticks.
@@ -117,7 +117,7 @@ public interface TestClientWorldContext
 	/**
 	 * Waits for all chunks to be rendered, optionally waiting for chunks to be
 	 * downloaded first. After this, all chunks
-	 * that are present in the client world will be visible in screenshots.
+	 * that are present in the client level will be visible in screenshots.
 	 * Fails if the chunks haven't been rendered
 	 * (and optionally downloaded) after {@code timeout} ticks.
 	 *

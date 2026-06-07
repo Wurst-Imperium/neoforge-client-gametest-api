@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.client.gametest;
+package net.fabricmc.fabric.mixin.client.gametest.world;
 
-import net.minecraft.client.multiplayer.ClientChunkCache;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(ClientChunkCache.class)
-public interface ClientChunkManagerAccessor
+import net.minecraft.world.level.gamerules.GameRuleMap;
+import net.minecraft.world.level.gamerules.GameRules;
+
+@Mixin(GameRules.class)
+public interface GameRulesAccessor
 {
-	@Accessor("storage")
-	ClientChunkCache.Storage getChunks();
+	@Accessor
+	GameRuleMap getRules();
 }

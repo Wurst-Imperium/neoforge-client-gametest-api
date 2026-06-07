@@ -18,23 +18,27 @@ package net.fabricmc.fabric.mixin.client.gametest.input;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.blaze3d.platform.Window;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import net.fabricmc.fabric.impl.client.gametest.util.WindowHooks;
+
 import net.minecraft.client.Minecraft;
 
+import net.fabricmc.fabric.impl.client.gametest.util.WindowHooks;
+
 @Mixin(Minecraft.class)
-public class MinecraftClientMixin
+public class MinecraftMixin
 {
 	@Shadow
 	@Final
 	private Window window;
 	
-	@ModifyExpressionValue(method = "runTick",
-		at = @At(value = "INVOKE",
-			target = "Lcom/mojang/blaze3d/platform/Window;isMinimized()Z"))
+	@ModifyExpressionValue(method = "renderFrame",
+		at = @At(value = "FIELD",
+			target = "Lnet/minecraft/client/renderer/state/WindowRenderState;isMinimized:Z",
+			opcode = Opcodes.GETFIELD))
 	private boolean hasZeroRealWidthOrHeight(boolean original)
 	{
 		WindowHooks windowHooks = (WindowHooks)(Object)window;

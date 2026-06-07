@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.client.gametest.lifecycle;
+package net.fabricmc.fabric.mixin.client.gametest.screenshot;
 
-import net.minecraft.client.Options;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-@Mixin(Options.class)
-public interface GameOptionsAccessor
+import net.minecraft.client.DeltaTracker;
+
+@Mixin(DeltaTracker.DefaultValue.class)
+public interface DeltaTrackerDefaultValueAccessor
 {
-	@Invoker("processOptions")
-	void invokeAccept(Options.FieldAccess visitor);
+	@Invoker("<init>")
+	static DeltaTracker.DefaultValue create(float constant)
+	{
+		throw new UnsupportedOperationException("Implemented via mixin");
+	}
 }

@@ -56,7 +56,6 @@ public class TestServerContextImpl implements TestServerContext
 	}
 	
 	@Override
-	@SuppressWarnings("deprecation")
 	public <T, E extends Throwable> T computeOnServer(
 		FailableFunction<MinecraftServer, T, E> function) throws E
 	{

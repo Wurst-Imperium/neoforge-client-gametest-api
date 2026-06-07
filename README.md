@@ -9,7 +9,7 @@ This is a personal project, made because I wanted client gametests for my own Ne
 ```groovy
 plugins {
     id "net.neoforged.gradle.userdev" version "7.1.36"
-    id "net.wimods.neoforge-client-gametest-api" version "0.1.0+1.21.11"
+    id "net.wimods.neoforge-client-gametest-api" version "0.1.0+26.1"
 }
 
 repositories {

@@ -16,12 +16,14 @@
 
 package net.fabricmc.fabric.api.client.gametest.v1;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import java.util.function.Function;
+
+import com.mojang.blaze3d.platform.InputConstants;
+import org.jetbrains.annotations.ApiStatus;
+
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
-import org.jetbrains.annotations.ApiStatus;
 
 /**
  * The client gametest input handler used to simulate inputs to the client.
@@ -30,47 +32,44 @@ import org.jetbrains.annotations.ApiStatus;
 public interface TestInput
 {
 	/**
-	 * Starts holding down a key binding. The key binding will be held until it
-	 * is released. The key binding must be
-	 * bound. Does nothing if the key binding is already being held.
+	 * Starts holding down a key mapping. The key mapping will be held until it
+	 * is released. The key mapping must be
+	 * bound. Does nothing if the key mapping is already being held.
 	 *
-	 * <p>
-	 * <strong>Most key bindings will only start reacting to this when a tick is
-	 * waited.</strong>
+	 * <h4>Most key mappings will only start reacting to this when a tick is
+	 * waited.</h4>
 	 *
-	 * @param keyBinding
-	 *            The key binding to hold
+	 * @param keyMapping
+	 *            The key mapping to hold
 	 * @see #releaseKey(KeyMapping)
 	 * @see #pressKey(KeyMapping)
 	 * @see #holdKey(Function)
 	 */
-	void holdKey(KeyMapping keyBinding);
+	void holdKey(KeyMapping keyMapping);
 	
 	/**
-	 * Starts holding down a key binding. The key binding will be held until it
-	 * is released. The key binding must be
-	 * bound. Does nothing if the key binding is already being held.
+	 * Starts holding down a key mapping. The key mapping will be held until it
+	 * is released. The key mapping must be
+	 * bound. Does nothing if the key mapping is already being held.
 	 *
-	 * <p>
-	 * <strong>Most key bindings will only start reacting to this when a tick is
-	 * waited.</strong>
+	 * <h4>Most key mappings will only start reacting to this when a tick is
+	 * waited.</h4>
 	 *
-	 * @param keyBindingGetter
-	 *            The function to get the key binding from the game options
+	 * @param keyMappingGetter
+	 *            The function to get the key mapping from the game options
 	 * @see #releaseKey(Function)
 	 * @see #pressKey(Function)
 	 * @see #holdKey(KeyMapping)
 	 */
-	void holdKey(Function<Options, KeyMapping> keyBindingGetter);
+	void holdKey(Function<Options, KeyMapping> keyMappingGetter);
 	
 	/**
 	 * Starts holding down a key or mouse button. The key will be held until it
 	 * is released. Does nothing if the key or
 	 * mouse button is already being held.
 	 *
-	 * <p>
-	 * <strong>Most key bindings will only start reacting to this when a tick is
-	 * waited.</strong>
+	 * <h4>Most key mappings will only start reacting to this when a tick is
+	 * waited.</h4>
 	 *
 	 * @param key
 	 *            The key or mouse button to hold
@@ -84,9 +83,8 @@ public interface TestInput
 	 * Does nothing if the key is already being
 	 * held.
 	 *
-	 * <p>
-	 * <strong>Most key bindings will only start reacting to this when a tick is
-	 * waited.</strong>
+	 * <h4>Most key mappings will only start reacting to this when a tick is
+	 * waited.</h4>
 	 *
 	 * @param keyCode
 	 *            The key code of the key to hold
@@ -100,9 +98,8 @@ public interface TestInput
 	 * it is released. Does nothing if the mouse
 	 * button is already being held.
 	 *
-	 * <p>
-	 * <strong>Most key bindings will only start reacting to this when a tick is
-	 * waited.</strong>
+	 * <h4>Most key mappings will only start reacting to this when a tick is
+	 * waited.</h4>
 	 *
 	 * @param button
 	 *            The mouse button to hold
@@ -114,7 +111,7 @@ public interface TestInput
 	/**
 	 * Starts holding down left control, or left super on macOS. Suitable for
 	 * triggering
-	 * {@link Minecraft#isCtrlPressed()}. The key will be held until it is
+	 * {@link Minecraft#hasControlDown()}. The key will be held until it is
 	 * released. Does nothing if the key is already
 	 * being held.
 	 *
@@ -124,7 +121,7 @@ public interface TestInput
 	
 	/**
 	 * Starts holding down left shift. Suitable for triggering
-	 * {@link Minecraft#isShiftPressed()}. The key will be held until
+	 * {@link Minecraft#hasShiftDown()}. The key will be held until
 	 * it is released. Does nothing if the key is already being held.
 	 *
 	 * @see #releaseShift()
@@ -133,7 +130,7 @@ public interface TestInput
 	
 	/**
 	 * Starts holding down left alt. Suitable for triggering
-	 * {@link Minecraft#isAltPressed()}. The key will be held until it
+	 * {@link Minecraft#hasAltDown()}. The key will be held until it
 	 * is released. Does nothing if the key is already being held.
 	 *
 	 * @see #releaseAlt()
@@ -141,42 +138,36 @@ public interface TestInput
 	void holdAlt();
 	
 	/**
-	 * Releases a key binding. The key binding must be bound. Does nothing if
-	 * the key binding is not being held.
+	 * Releases a key mapping. The key mapping must be bound. Does nothing if
+	 * the key mapping is not being held.
 	 *
-	 * <p>
-	 * <strong>Most key bindings will only react to this when a tick is
-	 * waited.</strong>
+	 * <h4>Most key mappings will only react to this when a tick is waited.</h4>
 	 *
-	 * @param keyBinding
-	 *            The key binding to release
+	 * @param keyMapping
+	 *            The key mapping to release
 	 * @see #holdKey(KeyMapping)
 	 * @see #releaseKey(Function)
 	 */
-	void releaseKey(KeyMapping keyBinding);
+	void releaseKey(KeyMapping keyMapping);
 	
 	/**
-	 * Releases a key binding. The key binding must be bound. Does nothing if
-	 * the key binding is not being held.
+	 * Releases a key mapping. The key mapping must be bound. Does nothing if
+	 * the key mapping is not being held.
 	 *
-	 * <p>
-	 * <strong>Most key bindings will only react to this when a tick is
-	 * waited.</strong>
+	 * <h4>Most key mappings will only react to this when a tick is waited.</h4>
 	 *
-	 * @param keyBindingGetter
-	 *            The function to get the key binding from the game options
+	 * @param keyMappingGetter
+	 *            The function to get the key mapping from the game options
 	 * @see #holdKey(Function)
 	 * @see #releaseKey(KeyMapping)
 	 */
-	void releaseKey(Function<Options, KeyMapping> keyBindingGetter);
+	void releaseKey(Function<Options, KeyMapping> keyMappingGetter);
 	
 	/**
 	 * Releases a key or mouse button. Does nothing if the key or mouse button
 	 * is not being held.
 	 *
-	 * <p>
-	 * <strong>Most key bindings will only react to this when a tick is
-	 * waited.</strong>
+	 * <h4>Most key mappings will only react to this when a tick is waited.</h4>
 	 *
 	 * @param key
 	 *            The key or mouse button to release
@@ -187,9 +178,7 @@ public interface TestInput
 	/**
 	 * Releases a key. Does nothing if the key is not being held.
 	 *
-	 * <p>
-	 * <strong>Most key bindings will only react to this when a tick is
-	 * waited.</strong>
+	 * <h4>Most key mappings will only react to this when a tick is waited.</h4>
 	 *
 	 * @param keyCode
 	 *            The GLFW key code of the key to release
@@ -201,9 +190,7 @@ public interface TestInput
 	 * Releases a mouse button. Does nothing if the mouse button is not being
 	 * held.
 	 *
-	 * <p>
-	 * <strong>Most key bindings will only react to this when a tick is
-	 * waited.</strong>
+	 * <h4>Most key mappings will only react to this when a tick is waited.</h4>
 	 *
 	 * @param button
 	 *            The GLFW mouse button to release
@@ -213,7 +200,7 @@ public interface TestInput
 	
 	/**
 	 * Releases left control, or left super on macOS. Suitable for un-triggering
-	 * {@link Minecraft#isCtrlPressed()}. Does
+	 * {@link Minecraft#hasControlDown()}. Does
 	 * nothing if the key is not being held.
 	 *
 	 * @see #holdControl()
@@ -222,61 +209,61 @@ public interface TestInput
 	
 	/**
 	 * Releases left shift. Suitable for un-triggering
-	 * {@link Minecraft#isShiftPressed()}. Does nothing if the key is not
+	 * {@link Minecraft#hasShiftDown()}. Does nothing if the key is not
 	 * being held.
 	 *
-	 * @see #releaseShift()
+	 * @see #holdShift()
 	 */
 	void releaseShift();
 	
 	/**
 	 * Releases left alt. Suitable for un-triggering
-	 * {@link Minecraft#isAltPressed()}. Does nothing if the key is not being
+	 * {@link Minecraft#hasAltDown()}. Does nothing if the key is not being
 	 * held.
 	 *
-	 * @see #releaseAlt()
+	 * @see #holdAlt()
 	 */
 	void releaseAlt();
 	
 	/**
-	 * Presses and releases a key binding, then waits a tick. The key binding
+	 * Presses and releases a key mapping, then waits a tick. The key mapping
 	 * must be bound.
 	 *
 	 * <p>
-	 * A tick is waited because most key bindings need a tick to happen to react
+	 * A tick is waited because most key mappings need a tick to happen to react
 	 * to the press. If you don't want the
 	 * delay, use {@link #holdKeyFor(KeyMapping, int) holdKeyFor} with a tick
 	 * count of {@code 0}.
 	 *
-	 * @param keyBinding
-	 *            The key binding to press
+	 * @param keyMapping
+	 *            The key mapping to press
 	 * @see #holdKey(KeyMapping)
 	 * @see #pressKey(Function)
 	 */
-	void pressKey(KeyMapping keyBinding);
+	void pressKey(KeyMapping keyMapping);
 	
 	/**
-	 * Presses and releases a key binding, then waits a tick. The key binding
+	 * Presses and releases a key mapping, then waits a tick. The key mapping
 	 * must be bound.
 	 *
 	 * <p>
-	 * A tick is waited because most key bindings need a tick to happen to react
+	 * A tick is waited because most key mappings need a tick to happen to react
 	 * to the press. If you don't want the
 	 * delay, use {@link #holdKeyFor(Function, int) holdKeyFor} with a tick
 	 * count of {@code 0}.
 	 *
-	 * @param keyBindingGetter
-	 *            The function to get the key binding from the game options
+	 * @param keyMappingGetter
+	 *            The function to get the key mapping from the game options
 	 * @see #holdKey(Function)
 	 * @see #pressKey(KeyMapping)
 	 */
-	void pressKey(Function<Options, KeyMapping> keyBindingGetter);
+	void pressKey(Function<Options, KeyMapping> keyMappingGetter);
 	
 	/**
 	 * Presses and releases a key or mouse button, then waits a tick.
 	 *
 	 * <p>
-	 * A tick is waited because most key bindings need a tick to happen to react
+	 * A tick is waited because most key mappings need a tick to happen to react
 	 * to the press. If you don't want the
 	 * delay, use {@link #holdKeyFor(InputConstants.Key, int) holdKeyFor} with a
 	 * tick count of {@code 0}.
@@ -291,7 +278,7 @@ public interface TestInput
 	 * Presses and releases a key, then waits a tick.
 	 *
 	 * <p>
-	 * A tick is waited because most key bindings need a tick to happen to react
+	 * A tick is waited because most key mappings need a tick to happen to react
 	 * to the press. If you don't want the
 	 * delay, use {@link #holdKeyFor(int, int) holdKeyFor} with a tick count of
 	 * {@code 0}.
@@ -311,7 +298,7 @@ public interface TestInput
 	 * Presses and releases a mouse button, then waits a tick.
 	 *
 	 * <p>
-	 * A tick is waited because most key bindings need a tick to happen to react
+	 * A tick is waited because most key mappings need a tick to happen to react
 	 * to the press. If you don't want the
 	 * delay, use {@link #holdMouseFor(int, int) holdMouseFor} with a tick count
 	 * of {@code 0}.
@@ -323,42 +310,42 @@ public interface TestInput
 	void pressMouse(int button);
 	
 	/**
-	 * Holds a key binding for the specified number of ticks and then releases
+	 * Holds a key mapping for the specified number of ticks and then releases
 	 * it. Waits until this process is finished.
-	 * The key binding must be bound.
+	 * The key mapping must be bound.
 	 *
 	 * <p>
 	 * Although the key will be released when this method returns, <strong>most
-	 * key bindings will only react to this
+	 * key mappings will only react to this
 	 * when a tick is waited.</strong>
 	 *
-	 * @param keyBinding
-	 *            The key binding to hold
+	 * @param keyMapping
+	 *            The key mapping to hold
 	 * @param ticks
-	 *            The number of ticks to hold the key binding for
+	 *            The number of ticks to hold the key mapping for
 	 * @see #holdKey(KeyMapping)
 	 * @see #holdKeyFor(Function, int)
 	 */
-	void holdKeyFor(KeyMapping keyBinding, int ticks);
+	void holdKeyFor(KeyMapping keyMapping, int ticks);
 	
 	/**
-	 * Holds a key binding for the specified number of ticks and then releases
+	 * Holds a key mapping for the specified number of ticks and then releases
 	 * it. Waits until this process is finished.
-	 * The key binding must be bound.
+	 * The key mapping must be bound.
 	 *
 	 * <p>
 	 * Although the key will be released when this method returns, <strong>most
-	 * key bindings will only react to this
+	 * key mappings will only react to this
 	 * when a tick is waited.</strong>
 	 *
-	 * @param keyBindingGetter
-	 *            The key binding to hold
+	 * @param keyMappingGetter
+	 *            The key mapping to hold
 	 * @param ticks
-	 *            The number of ticks to hold the key binding for
+	 *            The number of ticks to hold the key mapping for
 	 * @see #holdKey(Function)
 	 * @see #holdKeyFor(Function, int)
 	 */
-	void holdKeyFor(Function<Options, KeyMapping> keyBindingGetter, int ticks);
+	void holdKeyFor(Function<Options, KeyMapping> keyMappingGetter, int ticks);
 	
 	/**
 	 * Holds a key or mouse button for the specified number of ticks and then
@@ -367,7 +354,7 @@ public interface TestInput
 	 *
 	 * <p>
 	 * Although the key or mouse button will be released when this method
-	 * returns, <strong>most key bindings will
+	 * returns, <strong>most key mappings will
 	 * only react to this when a tick is waited.</strong>
 	 *
 	 * @param key
@@ -384,7 +371,7 @@ public interface TestInput
 	 *
 	 * <p>
 	 * Although the key will be released when this method returns, <strong>most
-	 * key bindings will only react to this
+	 * key mappings will only react to this
 	 * when a tick is waited.</strong>
 	 *
 	 * @param keyCode
@@ -402,7 +389,7 @@ public interface TestInput
 	 *
 	 * <p>
 	 * Although the mouse button will be released when this method returns,
-	 * <strong>most key bindings will only react
+	 * <strong>most key mappings will only react
 	 * to this when a tick is waited.</strong>
 	 *
 	 * @param button

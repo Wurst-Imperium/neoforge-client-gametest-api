@@ -19,8 +19,8 @@ package net.fabricmc.fabric.impl.client.gametest.screenshot;
 import java.nio.file.Path;
 
 import com.google.common.base.Preconditions;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
+import org.jspecify.annotations.Nullable;
 
 import net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotCommonOptions;
 
@@ -28,7 +28,7 @@ public abstract class TestScreenshotCommonOptionsImpl<SELF extends TestScreensho
 	implements TestScreenshotCommonOptions<SELF>
 {
 	public boolean counterPrefix = true;
-	public float tickDelta = 1;
+	public float deltaTicks = 1;
 	@Nullable
 	public Vector2i size;
 	@Nullable
@@ -42,12 +42,12 @@ public abstract class TestScreenshotCommonOptionsImpl<SELF extends TestScreensho
 	}
 	
 	@Override
-	public SELF withTickDelta(float tickDelta)
+	public SELF withDeltaTicks(float deltaTicks)
 	{
-		Preconditions.checkArgument(tickDelta >= 0 && tickDelta <= 1,
-			"tickDelta must be between 0 and 1");
+		Preconditions.checkArgument(deltaTicks >= 0 && deltaTicks <= 1,
+			"deltaTicks must be between 0 and 1");
 		
-		this.tickDelta = tickDelta;
+		this.deltaTicks = deltaTicks;
 		return getThis();
 	}
 	

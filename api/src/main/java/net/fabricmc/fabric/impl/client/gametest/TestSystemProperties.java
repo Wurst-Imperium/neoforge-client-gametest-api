@@ -16,7 +16,7 @@
 
 package net.fabricmc.fabric.impl.client.gametest;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public final class TestSystemProperties
 {
@@ -35,10 +35,10 @@ public final class TestSystemProperties
 	public static final String TEST_MOD_RESOURCES_PATH =
 		System.getProperty("fabric.client.gametest.testModResourcesPath");
 	
-	// Disable the network (packet) synchronizer.
+	// Disable the network (packet) synchronizer. (Disabled by default)
 	public static final boolean DISABLE_NETWORK_SYNCHRONIZER =
-		System.getProperty(
-			"fabric.client.gametest.disableNetworkSynchronizer") != null;
+		!"false".equals(System.getProperty(
+			"fabric.client.gametest.disableNetworkSynchronizer", "true"));
 	
 	// Disable the joining of async stack traces in ThreadingImpl.
 	public static final boolean DISABLE_JOIN_ASYNC_STACK_TRACES =

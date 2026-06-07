@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.client.gametest;
+package net.fabricmc.fabric.mixin.client.gametest.gui;
 
-import net.minecraft.client.multiplayer.ClientChunkCache;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
+import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(ClientChunkCache.Storage.class)
-public interface ClientChunkManagerClientChunkMapAccessor
+import net.minecraft.client.gui.screens.Screen;
+
+@Mixin(Screen.class)
+public class ScreenMixin
 {
-	@Accessor("viewCenterX")
-	int getCenterChunkX();
-	
-	@Accessor("viewCenterZ")
-	int getCenterChunkZ();
+	@ModifyReturnValue(method = "panoramaShouldSpin", at = @At("RETURN"))
+	private boolean disableRotatingPanoramaForClientGameTests(boolean original)
+	{
+		return false;
+	}
 }

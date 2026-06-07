@@ -21,11 +21,13 @@ import java.util.stream.IntStream;
 
 import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.platform.NativeImage;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
-import net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonAlgorithm;
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
+
+import net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonAlgorithm;
 
 public class TestScreenshotComparisonAlgorithms
 {

@@ -14,21 +14,16 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.impl.client.gametest.util;
+package net.fabricmc.fabric.mixin.client.gametest.lifecycle;
 
-public interface WindowHooks
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Invoker;
+
+import net.minecraft.client.Options;
+
+@Mixin(Options.class)
+public interface OptionsAccessor
 {
-	int fabric_getRealWidth();
-	
-	int fabric_getRealHeight();
-	
-	int fabric_getRealFramebufferWidth();
-	
-	int fabric_getRealFramebufferHeight();
-	
-	void fabric_resetSize();
-	
-	void fabric_resize(int width, int height);
-	
-	void fabric_focus();
+	@Invoker
+	void invokeProcessOptions(Options.FieldAccess visitor);
 }
