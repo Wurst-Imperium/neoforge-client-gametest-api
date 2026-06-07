@@ -16,12 +16,6 @@ java {
 
 minecraft.accessTransformers.file file('src/main/resources/META-INF/accesstransformer.cfg')
 
-subsystems {
-	decompiler {
-		disabled()
-	}
-}
-
 dependencies {
 	implementation "net.neoforged:neoforge:${neo_version}"
 	compileOnlyApi 'org.jetbrains:annotations:26.0.2'

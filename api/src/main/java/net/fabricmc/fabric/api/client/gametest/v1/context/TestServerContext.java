@@ -19,6 +19,7 @@ package net.fabricmc.fabric.api.client.gametest.v1.context;
 import org.apache.commons.lang3.function.FailableConsumer;
 import org.apache.commons.lang3.function.FailableFunction;
 import org.jetbrains.annotations.ApiStatus;
+import org.jspecify.annotations.Nullable;
 
 import net.minecraft.server.MinecraftServer;
 
@@ -67,6 +68,6 @@ public interface TestServerContext
 	 * @throws E
 	 *             When the function throws an exception
 	 */
-	<T, E extends Throwable> T computeOnServer(
+	<T extends @Nullable Object, E extends Throwable> T computeOnServer(
 		FailableFunction<MinecraftServer, T, E> function) throws E;
 }
